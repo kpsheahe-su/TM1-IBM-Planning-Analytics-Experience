@@ -1,0 +1,2 @@
+This is ficticious data. It in no way represents any real companies financial sales data or any other personal data. 
+The intent of this project is to show in a very basic way how TM1 can be used with a given csv of a companies sales data. 

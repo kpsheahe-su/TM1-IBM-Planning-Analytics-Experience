@@ -1,0 +1,56 @@
+﻿FORMAT==100
+FEEDSTRINGS;
+SKIPCHECK;
+
+
+[{'First Year','Last Year','Current Actual Load Month','Current Actual Load Year'},'Number'] = N:
+	 Numbr( DB('zSystem-Server-Parameter',!zSystem-Parameter,'String') );
+
+[{'Current Forecast Year','Prior Forecast Year','Current Forecast Month','Prior Forecast Month'},'Number'] = N:
+	 Numbr( DB('zSystem-Server-Parameter',!zSystem-Parameter,'String') );
+
+
+[{'First Forecast Year','Current Forecast Year','Last Forecast Year'},'Number'] = N:
+	 Numbr( DB('zSystem-Server-Parameter',!zSystem-Parameter,'String') );
+
+[{'Current Actual Load Period','Current Forecast Period','Prior Forecast Period'},'Number'] = N:
+	Numbr( Subst( DB('zSystem-Server-Parameter',!zSystem-Parameter,'String') , 1, 4) |
+	Subst( DB('zSystem-Server-Parameter',!zSystem-Parameter,'String') , 6, 2) );
+
+['Current Forecast Year','String'] = S:
+	 Subst( DB('zSystem-Server-Parameter','Current Forecast Period','String'), 1, 4 );
+
+['Prior Forecast Period','String'] = S:
+	ATTRS('Fiscal Period',DB('zSystem-Server-Parameter','Current Forecast Period','String'),'Previous Period');
+
+['Prior Forecast Year','String'] = S:
+	 ATTRS( 'Fiscal Year', Subst( DB('zSystem-Server-Parameter','Current Forecast Period','String'), 1, 4 ), 'Previous Year' );
+
+['Prior Forecast Month','String'] = S:
+	 Subst( DB('zSystem-Server-Parameter','Prior Forecast Period','String'), 6, 2 );
+
+
+['Current Actual Load Month','String'] = S:
+	 Subst( DB('zSystem-Server-Parameter','Current Actual Load Period','String'), 6, 2 );
+
+['Current Actual Load Year','String'] = S:
+	 Subst( DB('zSystem-Server-Parameter','Current Actual Load Period','String'), 1, 4 );
+
+
+['Current Forecast Month','String'] = S:
+	 Subst( DB('zSystem-Server-Parameter','Current Forecast Period','String'), 6, 2 );
+
+
+['Number'] = C:0;
+
+FEEDERS;
+['String'] =>['Number'];
+
+['Current Actual Load Period'] =>
+	['Current Actual Load Month'],
+	['Current Actual Load Year'];
+
+
+['Current Forecast Period'] =>
+	['Current Forecast Year'],
+	['Prior Forecast Year'];

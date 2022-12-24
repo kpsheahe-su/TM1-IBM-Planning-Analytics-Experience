@@ -1,0 +1,447 @@
+﻿FORMAT==100
+###############
+#Company 
+###############
+['Company'] = S:'GSPA';
+['Company Selected'] = S: '{[Company].[GSPA]}';
+
+###############
+#Division 
+###############
+['Division MDX'] = S: '{[Division].' | '[' |
+IF ( DIMIX('Company',DB('sys - User Selections',!}Clients,'Selection','Company')) > 0,
+	'}zCompany_' |  DIMNM('Company', DIMIX('Company',DB('sys - User Selections',!}Clients,'Selection','Company'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['Division Selected'] = S: '{[Division].[' |
+	IF(DIMIX('Division', DB('sys - User Selections', !'}Clients', 'Selection', 'Division')) = 0
+    	, 'All Division'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Division'))
+    | ']}';
+#####
+
+['EF-Division MDX'] = S: '{TM1DRILLDOWNMEMBER( {[Division].[All Division]}, ALL, RECURSIVE )}';
+
+# '{[EF-Division].' | '[' |
+# IF ( DIMIX('Company',DB('sys - User Selections',!}Clients,'Selection','Company')) > 0,
+# 	'}zCompany_' |  DIMNM('Company', DIMIX('Company',DB('sys - User Selections',!}Clients,'Selection','Company'))), 
+#    'SYS_Picklist_All-Leaves'
+#     ) | ']}';
+
+['EF-Division Selected'] = S: '{[EF-Division].[' |
+	IF(DIMIX('Division', DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Division')) = 0
+    	, 'All Division'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Division'))
+    | ']}';
+    
+####
+
+['RF-Division MDX'] = S: '{TM1DRILLDOWNMEMBER( {[Division].[All Division]}, ALL, RECURSIVE )}';
+
+
+# '{[RF-Division].' | '[' |
+# IF ( DIMIX('Company',DB('sys - User Selections',!}Clients,'Selection','Company')) > 0,
+# 	'}zCompany_' |  DIMNM('Company', DIMIX('Company',DB('sys - User Selections',!}Clients,'Selection','Company'))), 
+#    'SYS_Picklist_All-Leaves'
+#     ) | ']}';
+
+['RF-Division Selected'] = S: '{[RF-Division].[' |
+	IF(DIMIX('Division', DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Division')) = 0
+    	, 'All Division'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Division'))
+    | ']}';
+
+
+###############
+['Department MDX'] = S: '{[Department].' | '[' |'SYS_Picklist_All-Leaves' | ']}';
+
+['Department Selected'] = S: '{[Department].[' |
+	IF(DIMIX('Department', DB('sys - User Selections', !'}Clients', 'Selection', 'Department')) = 0
+    	, 'All Department'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Department'))
+    | ']}';
+
+###############
+# Master Client
+###############
+
+['Master Client'] =S:ATTRS( 'Client', DB( 'sys - User Selections', !'}Clients', 'Selection', 'Client' ), 'Master Client' ) ;
+
+['Master Client MDX'] = S: '{[Master Client].' | '[' |
+IF ( DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','Division')) > 0,
+	'}zDivision_' |  DIMNM('Division', DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','Division'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['Master Client Selected'] = S: '{[Master Client].[' |
+	IF(DIMIX('Master Client', DB('sys - User Selections', !'}Clients', 'Selection', 'Master Client')) = 0
+    	, 'All Master Client'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Master Client'))
+    | ']}';
+    
+#####
+
+
+['EF-Master Client'] =S:ATTRS( 'Client', DB( 'sys - User Selections', !'}Clients', 'Selection', 'EF-Client' ), 'Master Client' ) ; 
+
+['EF-Master Client MDX'] = S: '{[Master Client].' | '[' |
+IF ( DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','EF-Division')) > 0,
+	'}zDivision_' |  DIMNM('Division', DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','EF-Division'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['EF-Master Client Selected'] = S: '{[Master Client].[' |
+	IF(DIMIX('Master Client', DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Master Client')) = 0
+    	, 'All Master Client'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Master Client'))
+    | ']}';
+    
+#####
+
+['RF-Master Client'] =S:ATTRS( 'Client', DB( 'sys - User Selections', !'}Clients', 'Selection', 'RF-Client' ), 'Master Client' ) ;
+
+['RF-Master Client MDX'] = S: '{[Master Client].' | '[' |
+IF ( DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','RF-Division')) > 0,
+	'}zDivision_' |  DIMNM('Division', DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','RF-Division'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['RF-Master Client Selected'] = S: '{[Master Client].[' |
+	IF(DIMIX('Master Client', DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Master Client')) = 0
+    	, 'All Master Client'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Master Client'))
+    | ']}';
+    
+
+
+###############
+# Client
+###############
+['Client MDX'] = S: '{[Client].' | '[' |
+IF ( DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','Division')) > 0 & DB('sys - User Selections',!}Clients,'Selection','Division') @<> 'All Division',
+	'}zDivision_' |  DIMNM('Division', DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','Division'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['Client Selected'] = S: '{[Client].[' |
+	IF(DIMIX('Client', DB('sys - User Selections', !'}Clients', 'Selection', 'Client')) = 0
+    	, 'All Client'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Client'))
+    | ']}';
+    
+#####
+['EF-Client MDX'] = S: '{[Client].' | '[' |
+IF ( DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','EF-Division')) > 0 & DB('sys - User Selections',!}Clients,'Selection','EF-Division') @<> 'All Division',
+	'}zDivision_' |  DIMNM('Division', DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','EF-Division'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['EF-Client Selected'] = S: '{[Client].[' |
+	IF(DIMIX('Client', DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Client')) = 0
+    	, 'All Client'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Client'))
+    | ']}';
+    
+#####
+['RF-Client MDX'] = S: '{[Client].' | '[' |
+IF ( DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','RF-Division')) > 0 & DB('sys - User Selections',!}Clients,'Selection','RF-Division') @<> 'All Division',
+	'}zDivision_' |  DIMNM('Division', DIMIX('Division',DB('sys - User Selections',!}Clients,'Selection','RF-Division'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['RF-Client Selected'] = S: '{[Client].[' |
+	IF(DIMIX('Client', DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Client')) = 0
+    	, 'All Client'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Client'))
+    | ']}';
+    
+    
+['RF-Client Principal Name'] = S: DIMNM( 'Client', DIMIX('Client', DB('sys - User Selections',!}Clients,'Selection','RF-Client')));
+
+
+
+###############
+#Product
+###############
+# ['Product MDX'] = S: '{[Product].' | '[' |
+# IF ( DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','Client')) > 0 & DB('sys - User Selections',!}Clients,'Selection','Client') @<> 'All Client',
+# 	'}zClient_' |  DIMNM('Client', DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','Client'))), 
+#    'SYS_Picklist_All-Leaves'
+#     ) | ']}';
+
+# ['Product Selected'] = S: '{[Product].[' |
+# 	IF(DIMIX('Product', DB('sys - User Selections', !'}Clients', 'Selection', 'Product')) = 0
+#     	, 'All Product'
+#     	, DB('sys - User Selections', !'}Clients', 'Selection', 'Product'))
+#     | ']}';
+    
+# ####
+# ['EF-Product MDX'] = S: '{[Product].' | '[' |
+# IF ( DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','EF-Client')) > 0 & DB('sys - User Selections',!}Clients,'Selection','EF-Client') @<>'All Client' ,
+# 	'}zClient_' |  DIMNM('Client', DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','EF-Client'))), 
+#    'SYS_Picklist_All-Leaves'
+#     ) | ']}';
+
+# ['EF-Product Selected'] = S: '{[Product].[' |
+# 	IF(DIMIX('Product', DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Product')) = 0
+#     	, 'All Product'
+#     	, DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Product'))
+#     | ']}';
+    
+# ####
+# ['RF-Product MDX'] = S: '{[Product].' | '[' |
+# IF ( DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','RF-Client')) > 0  & DB('sys - User Selections',!}Clients,'Selection','RF-Client') @<> 'All Client',
+# 	'}zClient_' |  DIMNM('Client', DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','RF-Client'))), 
+#    'SYS_Picklist_All-Leaves'
+#     ) | ']}';
+
+# ['RF-Product Selected'] = S: '{[Product].[' |
+# 	IF(DIMIX('Product', DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Product')) = 0
+#     	, 'All Product'
+#     	, DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Product'))
+#     | ']}';
+    
+###############
+#
+###############
+['Project MDX'] = S: '{[Project].' | '[' |
+IF ( DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','Client')) > 0 & DB('sys - User Selections',!}Clients,'Selection','Client') @<> 'All Client',
+	'}zClient_' |  DIMNM('Client', DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','Client'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['Project Selected'] = S: '{[Project].[' |
+	IF(DIMIX('Project', DB('sys - User Selections', !'}Clients', 'Selection', 'Project')) = 0
+    	, 'All Project'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Project'))
+    | ']}';
+    
+####
+['EF-Project MDX'] = S: '{[Project].' | '[' |
+IF ( DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','EF-Client')) > 0 & DB('sys - User Selections',!}Clients,'Selection','EF-Client') @<> 'All Client',
+	'}zClient_' |  DIMNM('Client', DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','EF-Client'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}';
+
+['EF-Project Selected'] = S: '{[Project].[' |
+	IF(DIMIX('Project', DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Project')) = 0
+    	, 'All Project'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Project'))
+    | ']}';
+
+####
+['RF-Project MDX'] = S: '{UNION({TM1FILTERBYLEVEL({[Project].' | '[' |
+IF ( DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','RF-Client')) > 0 & DB('sys - User Selections',!}Clients,'Selection','RF-Client') @<> 'All Client',
+	'}zClient_' |  DIMNM('Client', DIMIX('Client',DB('sys - User Selections',!}Clients,'Selection','RF-Client'))), 
+   'SYS_Picklist_All-Leaves'
+    ) | ']}, 0)}, {[Project].[All Project]})}';
+
+
+
+['RF-Project Selected'] = S: '{[Project].[' |
+	IF(DIMIX('Project', DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Project')) = 0
+    	, 'All Project'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Project'))
+    | ']}';
+    
+###############
+    
+['Fiscal Year Selected'] = S: '{[Fiscal Year].[' |
+	IF(DIMIX('Fiscal Year', DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Year')) = 0
+    	, DB('zSystem-Server-Parameter','Current Actual Load Year' ,'String')
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Year'))
+    | ']}';
+
+['Department Selected'] = S: '{[Department].[' |
+	IF(DIMIX('Department', DB('sys - User Selections', !'}Clients', 'Selection', 'Department')) = 0
+    	, 'All Department'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Department'))
+    | ']}';
+
+
+['EF-Account Selected'] = S: '{[EF-Account].[' |
+	IF(DIMIX('EF-Account', DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Account')) = 0
+    	, '0453'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Account'))
+    | ']}';
+    
+['Expense Index Selected'] = S: '{[Expense Index].[' |
+	IF(DIMIX('Expense Index', DB('sys - User Selections', !'}Clients', 'Selection', 'Expense Index')) = 0
+    	, 'All Expense Index'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Expense Index'))
+    | ']}';
+ 
+['EF-Measure Selected'] = S: '{[EF-Measure].[' |
+	IF(DIMIX('EF-Measure', DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Measure')) = 0
+    	, 'Amount'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'EF-Measure'))
+    | ']}';
+
+
+['Scenario Selected'] = S: '{[Scenario].[' |
+	IF(DIMIX('Scenario', DB('sys - User Selections', !'}Clients', 'Selection', 'Scenario')) = 0
+    	, 'Actual'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Scenario'))
+    | ']}';
+
+
+['RF-Measure Selected'] = S: '{[RF-Measure].[' |
+	IF(DIMIX('RF-Measure', DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Measure')) = 0
+    	, 'Amount'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Measure'))
+    | ']}';
+    
+['RF-Account Selected'] = S: '{[RF-Account].[' |
+	IF(DIMIX('RF-Account', DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Account')) = 0
+    	, '0308'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'RF-Account'))
+    | ']}';
+
+
+['Version Selected'] = S: '{[Version].[' |
+	IF(DIMIX('Version', DB('sys - User Selections', !'}Clients', 'Selection', 'Version')) = 0
+    	, 'Current'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Version'))
+    | ']}';
+
+
+['Currency Selected'] = S: '{[Currency].[' |
+	IF(DIMIX('Currency', DB('sys - User Selections', !'}Clients', 'Selection', 'Currency')) = 0
+    	, 'local'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Currency'))
+    | ']}';
+
+
+['Fiscal Period Selected'] = S:
+	IF(DIMIX('Fiscal Period', DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period')) = 0
+    	,
+        
+ # '{TM1FILTERBYLEVEL( {TM1DRILLDOWNMEMBER([Fiscal Period].['| DB('zSystem-Server-Parameter','Current Actual Load Year','String') | ']}, ALL, RECURSIVE )}, 0)}'|
+  
+
+           '{ [Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-01]' |
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-02]' |
+			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-03]' |
+#             ',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-Q1]' |
+
+			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-04]' |
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-05]' |
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-06]' |
+#             ',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-Q2]' |
+
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-07]' |
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-08]' |
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-09]' |
+#             ',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-Q3]' |
+
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-10]' |
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-11]' |
+ 			',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-12]' |
+#             ',[Fiscal Period].[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | '-Q4]' |
+
+             ',[Fiscal Period].' | '[' | DB('zSystem-Server-Parameter','Current Actual Load Year','String') | ']'|
+			 ']}',
+
+     
+
+#  '{TM1FILTERBYLEVEL( {TM1DRILLDOWNMEMBER({[Fiscal Period].['| DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | ']}, ALL, RECURSIVE )}, 0)}'|
+
+             '{ [Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-01]' |
+ 			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-02]' |
+ 			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-03]' |
+#             ',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-Q1]' |
+
+ 			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-04]' |
+ 			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-05]' |
+ 			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-06]' |
+#             ',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-Q2]' |
+
+			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-07]' |
+			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-08]' |
+			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-09]' |
+#             ',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-Q3]' |
+
+			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-10]' |
+			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-11]' |
+			',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-12]' |
+#             ',[Fiscal Period].[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | '-Q4]' |
+
+             ',[Fiscal Period].' | '[' | DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period') | ']' |
+
+			 ']}');
+
+
+['Fiscal Period Total Year Selected'] = S: '{[Fiscal Period].[' |
+	IF(DIMIX('Fiscal Period', DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period')) = 0
+    	, DB('zSystem-Server-Parameter','Current Actual Load Year','String')
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Fiscal Period'))
+    | ']}';
+
+
+['DataSource Selected'] = S: '{[DataSource].[' |
+	IF(DIMIX('DataSource', DB('sys - User Selections', !'}Clients', 'Selection', 'DataSource')) = 0
+    	, 'All Data Source'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'DataSource'))
+    | ']}';
+
+
+
+['Scale Selected'] = S: '{[Scale].[' |
+	IF(DIMIX('Scale', DB('sys - User Selections', !'}Clients', 'Selection', 'Scale')) = 0
+    	, 'Whole Units'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Scale'))
+    | ']}';
+
+['FR-Account Selected'] = S: '{[FR-Account].[' |
+	IF(DIMIX('FR-Account', DB('sys - User Selections', !'}Clients', 'Selection', 'FR-Account')) = 0
+    	, '0305'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'FR-Account'))
+    | ']}';
+
+['FR-Measure Selected'] = S: '{[FR-Measure].[' |
+	IF(DIMIX('FR-Measure', DB('sys - User Selections', !'}Clients', 'Selection', 'FR-Measure')) = 0
+    	, 'Amount'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'FR-Measure'))
+    | ']}';
+
+
+['mTime Information Selected'] = S: '{[mTime Information].[' |
+	IF(DIMIX('mTime Information', DB('sys - User Selections', !'}Clients', 'Selection', 'mTime Information')) = 0
+    	, 'Number of Days'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'mTime Information'))
+    | ']}';
+    
+    
+['Period Selected'] = S: '{[Period].[' |
+	IF(DIMIX('Period', DB('sys - User Selections', !'}Clients', 'Selection', 'Period')) = 0
+    	, 'Total Year'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Period'))
+    | ']}';
+   
+   
+['Reporting Scenario 1 Selected'] = S: '{[Scenario].[' |
+	IF(DIMIX('Scenario', DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 1')) = 0
+    	, 'Actual'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 1'))
+    | ']}';
+    
+
+['Reporting Scenario 2 Selected'] = S: '{[Scenario].[' |
+	IF(DIMIX('Scenario', DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 2')) = 0
+    	, 'Working Forecast'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 2'))
+    | ']}';
+
+
+['Reporting Scenario 3 Selected'] = S: '{[Scenario].[' |
+	IF(DIMIX('Scenario', DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 1')|' vs '|DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 2') ) = 0  
+    	, 'Actual vs Working Forecast'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 1')|' vs '|DB('sys - User Selections', !'}Clients', 'Selection', 'Reporting Scenario 2'))
+    | ']}';
+
+['Comparative Scenario Selected'] = S: '{TM1DRILLDOWNMEMBER({[Scenario].[ Working Forecast vs ' |
+	IF(DIMIX('Scenario', DB('sys - User Selections', !'}Clients', 'Selection', 'Comparative Scenario')) = 0 % DB('sys - User Selections', !'}Clients', 'Selection', 'Comparative Scenario') @='Working Forecast'
+    	, 'Actual'
+    	, DB('sys - User Selections', !'}Clients', 'Selection', 'Comparative Scenario'))
+    | ']}, ALL, RECURSIVE )}';

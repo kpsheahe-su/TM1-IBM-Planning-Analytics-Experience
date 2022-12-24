@@ -1,0 +1,13 @@
+﻿Month,Short,Long,Quarter,Prior,Next
+01,Jan,January,1,12,02
+02,Feb,February,1,01,03
+03,Mar,March,1,02,04
+04,Apr,April,2,03,05
+05,May,May,2,04,06
+06,Jun,June,2,05,07
+07,Jul,July,3,06,08
+08,Aug,August,3,07,09
+09,Sep,September,3,08,10
+10,Oct,October,4,09,11
+11,Nov,November,4,10,12
+12,Dec,December,4,11,01

@@ -1,0 +1,11 @@
+﻿FORMAT==100
+### No aggregation of dates
+[{'Start Date', 'End Date'}] = C: 0;
+
+### Date Information
+['Start Date'] = N: DayNo(!Fiscal Year | '-' | !Period | '-01') + 21916;
+['End Date'] = N: DayNo(Str(Numbr(!Fiscal Year) + AttrN('Period', !Period, 'Next Period Yr'), 4, 0) | '-' | AttrS('Period', !Period, 'Next Period') | '-01') + 21915;
+['Number of Days'] = N: ['End Date'] - ['Start Date'] + 1;
+
+
+

@@ -1,0 +1,23 @@
+﻿FORMAT==100
+SKIPCHECK;
+
+['Sales', 'LCY'] = N:['Sales', 'USD'] * DB('Currency',!Scenario,!Version,!Year,!Month,!Day,ATTRS('Location', !Location,'Currency'));
+['Price Each', 'LCY'] = N:['Price Each', 'USD'] * DB('Currency',!Scenario,!Version,!Year,!Month,!Day,ATTRS('Location', !Location,'Currency'));
+['MSRP', 'LCY'] = N:['MSRP', 'USD'] * DB('Currency',!Scenario,!Version,!Year,!Month,!Day,ATTRS('Location', !Location,'Currency'));
+
+['Order Line Number','LCY'] = N: ['Order Line Number','USD'];
+['Quantity Ordered','LCY'] = N: ['Quantity Ordered','USD'];
+#['Status','LCY'] = S: ['Status','USD'];
+#['Size','LCY'] = S: ['Size','USD'];
+
+
+FEEDERS;
+
+['Order Line Number','USD'] => ['Order Line Number','LCY'];
+['Quantity Ordered','USD'] => ['Quantity Ordered','LCY'];
+
+
+
+
+
+

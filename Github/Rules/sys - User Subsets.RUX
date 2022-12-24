@@ -1,0 +1,2 @@
+﻿FORMAT==100
+[] = S: DB('sys - User Selections', TM1USER, !sys - PAW Column, !sys - User Settings);
